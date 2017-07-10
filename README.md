@@ -1,1 +1,2 @@
-# GenealogyProject
+# Genealogy-Project
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c344fa50090742ddabfc135116a134c1)](https://www.codacy.com/app/sylvain.mathiot/Genealogy-Project?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SylvainMathiot/Genealogy-Project&amp;utm_campaign=Badge_Grade)
