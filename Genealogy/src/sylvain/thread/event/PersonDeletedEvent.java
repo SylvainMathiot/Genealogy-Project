@@ -7,10 +7,10 @@ import sylvain.model.Person;
  * @author Sylvain Mathiot
  *
  */
-public class FolderScannedEvent implements ScanningEventInterface{
+public class PersonDeletedEvent implements MonitoringEventInterface{
 	private Person person;
 	
-	public FolderScannedEvent(Person person){
+	public PersonDeletedEvent(Person person){
 		this.person = person;
 	}
 	

@@ -62,6 +62,25 @@ public class DataModel {
 		return person;
 	}
 	
+	public Person delete(String id){
+		Optional<Person> person = get(id);
+		if(person.isPresent())
+			delete(person.get());
+		
+		return person.get();
+	}
+	
+	public Person delete(Person person){
+		if(contains(person))
+			persons.remove(person);
+		
+		return person;
+	}
+	
+	public Person delete(File folder){
+		return delete(folder.getName().split("_")[0]);
+	}
+	
 	@Override
 	public String toString() {
 		StringBuffer str = new StringBuffer("DataModel :");

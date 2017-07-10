@@ -7,7 +7,7 @@
 	<property name="result.exec.file" value="${result.dir}/jacoco.exec"/>
 
 	<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
-		<classpath path="E:/SOFT/eclipse/lib/jacoco-2.0.0/lib/jacocoant.jar"/>
+		<classpath path="E:/SOFT/eclipse/lib/jacoco-0.7.10/lib/jacocoant.jar"/>
 	</taskdef>
 
 	<!-- CLEAN TASK -->
@@ -59,7 +59,7 @@
 	<!-- UPLOAD RESULTS TO CODACY -->
 	<target name="upload" depends="report">
 		<java classname="com.codacy.CodacyCoverageReporter">
-			<classpath path="E:/SOFT/eclipse/lib/jacoco-2.0.0/codacy-coverage-reporter-2.0.0-assembly.jar"/>
+			<classpath path="E:/SOFT/eclipse/lib/jacoco-0.7.10/codacy-coverage-reporter-2.0.0-assembly.jar"/>
 			<arg value="-l"/>
 			<arg value="Java"/>
 			<arg value="-r"/>

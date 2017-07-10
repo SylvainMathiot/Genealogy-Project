@@ -86,7 +86,7 @@ public class Person {
 						}
 					}
 				}else{
-					logger.error("Identity file not found for Person " + id);
+					logger.warn("Identity file not found for Person " + id);
 				}
 			}catch(Exception e){
 				logger.error(e.getMessage());

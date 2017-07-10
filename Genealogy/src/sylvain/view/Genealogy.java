@@ -18,6 +18,7 @@ import sylvain.thread.container.MonitoringContainer;
 import sylvain.thread.container.ScanningContainer;
 import sylvain.thread.event.FolderScannedEvent;
 import sylvain.thread.event.PersonAddedEvent;
+import sylvain.thread.event.PersonDeletedEvent;
 import sylvain.thread.event.PersonModifiedEvent;
 import sylvain.thread.listener.MonitoringListener;
 import sylvain.thread.listener.ScanningListener;
@@ -82,7 +83,7 @@ public class Genealogy extends Application{
  				Platform.runLater(new Runnable(){
  					@Override
  					public void run(){
- 						logger.debug("File scanned : " + e.getFolderName());
+ 						logger.info("Person added : " + e.getPerson());
  					}
  				});
  			}
@@ -98,7 +99,7 @@ public class Genealogy extends Application{
 				Platform.runLater(new Runnable(){
  					@Override
  					public void run(){
- 						logger.debug("Person added : " + e.getPerson());
+ 						logger.info("Person added : " + e.getPerson());
  					}
  				});
 			}
@@ -108,7 +109,17 @@ public class Genealogy extends Application{
 				Platform.runLater(new Runnable(){
  					@Override
  					public void run(){
- 						logger.debug("Person modified : " + e.getPerson());
+ 						logger.info("Person modified : " + e.getPerson());
+ 					}
+ 				});
+			}
+
+			@Override
+			public void personDeleted(PersonDeletedEvent e) {
+				Platform.runLater(new Runnable(){
+ 					@Override
+ 					public void run(){
+ 						logger.info("Person deleted : " + e.getPerson());
  					}
  				});
 			}

@@ -10,6 +10,7 @@ import javax.swing.event.EventListenerList;
 import org.apache.commons.lang3.StringUtils;
 
 import sylvain.model.DataModel;
+import sylvain.model.Person;
 import sylvain.thread.event.FolderScannedEvent;
 import sylvain.thread.event.ScanningEventInterface;
 import sylvain.thread.listener.ScanningListener;
@@ -51,12 +52,12 @@ public class ScanningContainer implements Serializable{
 	}
 	
 	public void scan(){
-		File[] list = Paths.get(target).toFile().listFiles();
+		File[] list = Paths.get(target).toFile().exists() ? Paths.get(target).toFile().listFiles() : new File[]{};
 		Arrays.asList(list).stream()
 			.filter(f -> f.isDirectory() && StringUtils.isNumeric(f.getName().subSequence(0, 4)))
 			.forEach(f -> {
-				DataModel.getInstance().add(f);
-				fireFolderScannedEvent(new FolderScannedEvent(f));
+				Person person = DataModel.getInstance().add(f);
+				fireFolderScannedEvent(new FolderScannedEvent(person));
 			});
 	}
 }
