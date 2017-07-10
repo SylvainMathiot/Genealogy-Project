@@ -1,0 +1,12 @@
+@font-face {
+
+}
+
+PannableCanvas{
+	-fx-background-color: lightgrey;
+	-fx-border-color: blue;
+}
+
+Person{
+	
+}

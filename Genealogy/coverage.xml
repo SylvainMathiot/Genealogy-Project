@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project name="Genealogy Code Coverage" default="rebuild" xmlns:jacoco="antlib:org.jacoco.ant">
+	<property name="dir.buildfile" value="."/>
+    <property name="src.dir" value="${dir.buildfile}/src"/>
+	<property name="result.dir" value="${dir.buildfile}/coverage"/>
+	<property name="result.report.dir" value="${result.dir}/site/jacoco"/>
+	<property name="result.exec.file" value="${result.dir}/jacoco.exec"/>
+
+	<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+		<classpath path="E:/SOFT/eclipse/lib/jacoco-2.0.0/lib/jacocoant.jar"/>
+	</taskdef>
+
+	<!-- CLEAN TASK -->
+	<target name="clean">
+		<delete dir="${result.dir}"/>
+	</target>
+
+	<!-- EXECUTE APPLICATION AND RECORD COVERAGE -->
+	<target name="test" depends="clean">
+		<!-- Step 2: Wrap test execution with the JaCoCo coverage task -->
+		<jacoco:coverage destfile="${result.exec.file}">
+			<java classname="sylvain.view.Genealogy" fork="true">
+				<classpath>
+					<pathelement path="bin"/>
+					<pathelement location="E:/SOFT/eclipse/lib/apache-log4j-2.2/log4j-api-2.2.jar"/>
+					<pathelement location="E:/SOFT/eclipse/lib/apache-log4j-2.2/log4j-core-2.2.jar"/>
+					<pathelement location="E:/SOFT/eclipse/lib/junit-4.12/junit-4.12.jar"/>
+					<pathelement location="E:/SOFT/eclipse/lib/controlsfx-8.40.12/controlsfx-8.40.12.jar"/>		
+					<pathelement location="E:/SOFT/eclipse/lib/commons-lang3-3.4/commons-lang3-3.4.jar"/>
+					<pathelement location="E:/SOFT/eclipse/lib/commons-io-2.5/commons-io-2.5.jar"/>
+					<pathelement location="E:/SOFT/eclipse/lib/ini4j-0.5.4/ini4j-0.5.4.jar"/>
+				</classpath>
+			</java>
+		</jacoco:coverage>
+	</target>
+
+	<!-- CREATE COVERAGE REPORT -->
+	<target name="report" depends="test">
+		<jacoco:report>
+			<executiondata>
+				<file file="${result.exec.file}"/>
+			</executiondata>
+
+			<structure name="Genealogy Code Coverage Report">
+				<classfiles>
+					<fileset dir="bin"/>
+				</classfiles>
+				<sourcefiles encoding="UTF-8">
+					<fileset dir="${src.dir}"/>
+				</sourcefiles>
+			</structure>
+
+			<!-- to produce reports in different formats. -->
+			<html destdir="${result.report.dir}"/>
+			<xml destfile="${result.report.dir}/report.xml"/>
+		</jacoco:report>
+	</target>
+	
+	<!-- UPLOAD RESULTS TO CODACY -->
+	<target name="upload" depends="report">
+		<java classname="com.codacy.CodacyCoverageReporter">
+			<classpath path="E:/SOFT/eclipse/lib/jacoco-2.0.0/codacy-coverage-reporter-2.0.0-assembly.jar"/>
+			<arg value="-l"/>
+			<arg value="Java"/>
+			<arg value="-r"/>
+			<arg value="${result.report.dir}/report.xml"/>
+		</java>
+	</target>
+
+	<!-- DEFAULT TASK -->
+	<target name="rebuild" depends="clean,test,report,upload"/>
+</project>
