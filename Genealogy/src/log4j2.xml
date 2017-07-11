@@ -2,10 +2,10 @@
 <Configuration status="error">
 	<Appenders>
 		<Console name="console" target="SYSTEM_OUT">
-			<PatternLayout pattern="%d{DEFAULT} [%t] %-5level %logger{36} | %m%n"/>
+			<PatternLayout pattern="%d{DEFAULT} [%t] %-5level %logger{36} | %m%n" />
 		</Console>
 		<File name="file" fileName="log/console.log" append="false">
-			<PatternLayout pattern="%d{DEFAULT} [%t] %-5level %logger{36} | %m%n"/>
+			<PatternLayout pattern="%d{DEFAULT} [%t] %-5level %logger{36} | %m%n" />
 		</File>
 	</Appenders>
 	<Loggers>

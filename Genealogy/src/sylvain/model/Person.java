@@ -17,182 +17,198 @@ import sylvain.controller.LoggerSingleton;
 import sylvain.controller.PropertiesSingleton;
 
 public class Person {
-	private static final Logger logger = LogManager.getLogger(LoggerSingleton.getInstance().getLoggerName(Person.class));
-	private String id = "";
-	private String lastName = "";
-	private String firstNames = "";
-	private String birthDate = "";
-	private String birthPlace = "";
-	private String deathDate = "";
-	private String deathPlace = "";
-	private List<Union> unions = new ArrayList<Union>();
-	
-	public Person(String id) {
-		super();
-		this.id = id;
-	}
-	
-	public Person(File folder) {
-		super();
-		if(folder != null && folder.isDirectory()){
-			id = folder.getName().split("_")[0];
+  private static final Logger logger =
+      LogManager.getLogger(LoggerSingleton.getInstance().getLoggerName(Person.class));
+  private String id = "";
+  private String lastName = "";
+  private String firstNames = "";
+  private String birthDate = "";
+  private String birthPlace = "";
+  private String deathDate = "";
+  private String deathPlace = "";
+  private List<Union> unions = new ArrayList<Union>();
 
-			try{
-				Optional<File> identity = Arrays.asList(folder.listFiles()).stream()
-						.filter(f -> f.isFile() && f.getName().equalsIgnoreCase(PropertiesSingleton.getInstance().get("IDENTITY.FILENAME")))
-						.findFirst();
-				
-				if(identity.isPresent()){
-					Ini  ini = new Ini(identity.get());
-					Section identitySection = ini.get("IDENTITY");
-					Section birthSection = ini.get("BIRTH");
-					Section deathSection = ini.get("DEATH");
-					Section childrenSection = ini.get("CHILDREN");
-					
-					if(identitySection != null){
-						lastName = identitySection.get("LASTNAME", "");
-						firstNames = identitySection.get("FIRSTNAMES", "");
-					}
-					
-					if(birthSection != null){
-						birthDate = birthSection.get("DATE", "");
-						birthPlace = birthSection.get("PLACE", "");
-					}
-					
-					if(deathSection != null){
-						deathDate = deathSection.get("DATE", "");
-						deathPlace = deathSection.get("PLACE", "");
-					}
-					
-					if(childrenSection != null){
-						int nbUnions = childrenSection.get("UNIONS", Integer.class, 0);
-						
-						Section unionSection;
-						Union union;
-						for(int i=1; i<=nbUnions; i++){
-							unionSection = ini.get("UNION-"+i);
-							if(unionSection != null){
-								union = new Union(this);
-								union.setStartDate(unionSection.get("STARTDATE", ""));
-								union.setEndDate(unionSection.get("ENDDATE", ""));
-								union.setType(unionSection.get("TYPE", ""));
-								union.setPartner(unionSection.get("PARTNER", ""));
-								for(String child : childrenSection.getAll("UNION-"+i)){
-									union.addChild(child);
-								}
-								
-								unions.add(union);
-							}
-						}
-					}
-				}else{
-					logger.warn("Identity file not found for Person " + id);
-				}
-			}catch(Exception e){
-				logger.error(e.getMessage());
-			}
-		}
-	}
-	
-	public void merge(Person person){
-		lastName = person.lastName;
-		firstNames = person.firstNames;
-		birthDate = person.birthDate;
-		birthPlace = person.birthPlace;
-		deathDate = person.deathDate;
-		deathPlace = person.deathPlace;
-		unions = person.unions;
-	}
-	
-	public String getId() {
-		return id;
-	}
+  public Person(String id) {
+    super();
+    this.id = id;
+  }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+  /**
+   * Constructor.
+   * 
+   * @param folder The Person folder
+   */
+  public Person(File folder) {
+    super();
+    if (folder != null && folder.isDirectory()) {
+      id = folder.getName().split("_")[0];
 
-	public String getLastName() {
-		return lastName;
-	}
+      try {
+        Optional<File> identity =
+            Arrays.asList(folder.listFiles())
+                .stream()
+                .filter(
+                    f ->
+                        f.isFile()
+                            && f.getName()
+                                .equalsIgnoreCase(
+                                    PropertiesSingleton.getInstance().get("IDENTITY.FILENAME")))
+                .findFirst();
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+        if (identity.isPresent()) {
+          Ini ini = new Ini(identity.get());
+          final Section identitySection = ini.get("IDENTITY");
+          final Section birthSection = ini.get("BIRTH");
+          final Section deathSection = ini.get("DEATH");
+          final Section childrenSection = ini.get("CHILDREN");
 
-	public String getFirstNames() {
-		return firstNames;
-	}
+          if (identitySection != null) {
+            lastName = identitySection.get("LASTNAME", "");
+            firstNames = identitySection.get("FIRSTNAMES", "");
+          }
 
-	public void setFirstNames(String firstNames) {
-		this.firstNames = firstNames;
-	}
+          if (birthSection != null) {
+            birthDate = birthSection.get("DATE", "");
+            birthPlace = birthSection.get("PLACE", "");
+          }
 
-	public String getBirthDate() {
-		return birthDate;
-	}
+          if (deathSection != null) {
+            deathDate = deathSection.get("DATE", "");
+            deathPlace = deathSection.get("PLACE", "");
+          }
 
-	public void setBirthDate(String birthDate) {
-		this.birthDate = birthDate;
-	}
+          if (childrenSection != null) {
+            int nbUnions = childrenSection.get("UNIONS", Integer.class, 0);
 
-	public String getBirthPlace() {
-		return birthPlace;
-	}
+            Section unionSection;
+            Union union;
+            for (int i = 1; i <= nbUnions; i++) {
+              unionSection = ini.get("UNION-" + i);
+              if (unionSection != null) {
+                union = new Union(this);
+                union.setStartDate(unionSection.get("STARTDATE", ""));
+                union.setEndDate(unionSection.get("ENDDATE", ""));
+                union.setType(unionSection.get("TYPE", ""));
+                union.setPartner(unionSection.get("PARTNER", ""));
+                for (String child : childrenSection.getAll("UNION-" + i)) {
+                  union.addChild(child);
+                }
 
-	public void setBirthPlace(String birthPlace) {
-		this.birthPlace = birthPlace;
-	}
+                unions.add(union);
+              }
+            }
+          }
+        } else {
+          logger.warn("Identity file not found for Person " + id);
+        }
+      } catch (Exception e) {
+        logger.error(e.getMessage());
+      }
+    }
+  }
 
-	public String getDeathDate() {
-		return deathDate;
-	}
+  /**
+   * Merge the person with the give one.
+   * 
+   * @param person The Person to merge from
+   */
+  public void merge(Person person) {
+    lastName = person.lastName;
+    firstNames = person.firstNames;
+    birthDate = person.birthDate;
+    birthPlace = person.birthPlace;
+    deathDate = person.deathDate;
+    deathPlace = person.deathPlace;
+    unions = person.unions;
+  }
 
-	public void setDeathDate(String deathDate) {
-		this.deathDate = deathDate;
-	}
+  public String getId() {
+    return id;
+  }
 
-	public String getDeathPlace() {
-		return deathPlace;
-	}
+  public void setId(String id) {
+    this.id = id;
+  }
 
-	public void setDeathPlace(String deathPlace) {
-		this.deathPlace = deathPlace;
-	}
+  public String getLastName() {
+    return lastName;
+  }
 
-	public List<Union> getUnions() {
-		return unions;
-	}
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
 
-	public void setUnions(List<Union> unions) {
-		this.unions = unions;
-	}
+  public String getFirstNames() {
+    return firstNames;
+  }
 
-	@Override
-	public boolean equals(Object obj) {
-		if(obj == null){return false;}
-		if(obj == this){return true;}
-		if(obj.getClass() != getClass()) {
-			return false;
-		}
-		
-		Person p = (Person) obj;
-		return new EqualsBuilder()
-				.append(id, p.getId())
-				.isEquals();
-	}
+  public void setFirstNames(String firstNames) {
+    this.firstNames = firstNames;
+  }
 
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder()
-				.append(id)
-				.append(lastName)
-				.append(firstNames)
-				.toHashCode();
-	}
+  public String getBirthDate() {
+    return birthDate;
+  }
 
-	@Override
-	public String toString() {
-		return "Person [" + id + "] " + lastName + " " + firstNames;
-	}
+  public void setBirthDate(String birthDate) {
+    this.birthDate = birthDate;
+  }
+
+  public String getBirthPlace() {
+    return birthPlace;
+  }
+
+  public void setBirthPlace(String birthPlace) {
+    this.birthPlace = birthPlace;
+  }
+
+  public String getDeathDate() {
+    return deathDate;
+  }
+
+  public void setDeathDate(String deathDate) {
+    this.deathDate = deathDate;
+  }
+
+  public String getDeathPlace() {
+    return deathPlace;
+  }
+
+  public void setDeathPlace(String deathPlace) {
+    this.deathPlace = deathPlace;
+  }
+
+  public List<Union> getUnions() {
+    return unions;
+  }
+
+  public void setUnions(List<Union> unions) {
+    this.unions = unions;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == null) {
+      return false;
+    }
+    if (obj == this) {
+      return true;
+    }
+    if (obj.getClass() != getClass()) {
+      return false;
+    }
+
+    Person p = (Person) obj;
+    return new EqualsBuilder().append(id, p.getId()).isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder().append(id).append(lastName).append(firstNames).toHashCode();
+  }
+
+  @Override
+  public String toString() {
+    return "Person [" + id + "] " + lastName + " " + firstNames;
+  }
 }
