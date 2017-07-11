@@ -1,8 +1,5 @@
 package sylvain.view;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Group;
@@ -12,6 +9,10 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import sylvain.controller.LoggerSingleton;
 import sylvain.controller.PropertiesSingleton;
 import sylvain.thread.container.MonitoringContainer;
@@ -38,7 +39,7 @@ public class Genealogy extends Application {
 
   /**
    * Main method.
-   * 
+   *
    * @param args The command line arguments array
    */
   public static void main(String[] args) {
@@ -85,9 +86,38 @@ public class Genealogy extends Application {
           }
         });
 
+    // Start database folder scanning thread
+    Thread scanningThread = new Thread(new ScanningThread(scanningContainer()));
+    scanningThread.setDaemon(false);
+    scanningThread.start();
+    scanningThread.join();
+
+    // Start database folder monitoring thread
+    Thread monitoringThread = new Thread(new MonitoringThread(monitoringContainer()));
+    monitoringThread.setDaemon(true);
+    monitoringThread.start();
+
+    primaryStage.setScene(scene);
+    primaryStage.show();
+  }
+
+  private Parent createContent(PannableCanvas canvas) {
+    Group group = new Group();
+    // NodeGestures nodeGestures = new NodeGestures(canvas);
+
+    // Person p1 = new Person(nodeGestures);
+    // canvas.getChildren().addAll(p1);
+
+    group.getChildren().add(canvas);
+
+    return group;
+  }
+
+  private ScanningContainer scanningContainer() {
     // Configure database folder scanning listener
     ScanningContainer databaseFolderScanning =
         new ScanningContainer(PropertiesSingleton.getInstance().get("DATABASE.FOLDER"));
+
     databaseFolderScanning.addScanningListener(
         new ScanningListener() {
 
@@ -103,8 +133,13 @@ public class Genealogy extends Application {
           }
         });
 
+    return databaseFolderScanning;
+  }
+
+  private MonitoringContainer monitoringContainer() {
     // Configure database folder monitoring listener
     MonitoringContainer databaseFolderMonitoring = new MonitoringContainer();
+
     databaseFolderMonitoring.addMonitoringListener(
         new MonitoringListener() {
 
@@ -142,30 +177,6 @@ public class Genealogy extends Application {
           }
         });
 
-    // Start database folder scanning thread
-    Thread scanningThread = new Thread(new ScanningThread(databaseFolderScanning));
-    scanningThread.setDaemon(false);
-    scanningThread.start();
-    scanningThread.join();
-
-    // Start database folder monitoring thread
-    Thread monitoringThread = new Thread(new MonitoringThread(databaseFolderMonitoring));
-    monitoringThread.setDaemon(true);
-    monitoringThread.start();
-
-    primaryStage.setScene(scene);
-    primaryStage.show();
-  }
-
-  private Parent createContent(PannableCanvas canvas) {
-    Group group = new Group();
-    // NodeGestures nodeGestures = new NodeGestures(canvas);
-
-    // Person p1 = new Person(nodeGestures);
-    // canvas.getChildren().addAll(p1);
-
-    group.getChildren().add(canvas);
-
-    return group;
+    return databaseFolderMonitoring;
   }
 }

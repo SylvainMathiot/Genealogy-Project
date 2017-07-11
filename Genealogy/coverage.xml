@@ -41,7 +41,7 @@
 				<file file="${result.exec.file}"/>
 			</executiondata>
 
-			<structure name="Genealogy Code Coverage Report">
+			<structure name="${ant.project.name}">
 				<classfiles>
 					<fileset dir="bin"/>
 				</classfiles>
