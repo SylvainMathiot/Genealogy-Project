@@ -13,7 +13,7 @@ public class Person extends Rectangle {
   /**
    * Constructor.
    * 
-   * @param nodeGestures The node gesture
+   * @param nodeGestures The node gestures
    */
   public Person(NodeGestures nodeGestures) {
     setWidth(200);

@@ -14,6 +14,11 @@ public class Union {
   private Person partner = null;
   private List<Person> children = new ArrayList<Person>();
 
+  /**
+   * Constructor.
+   * 
+   * @param person The person from whom to initialize the union
+   */
   public Union(Person person) {
     this.person = person;
   }
@@ -124,9 +129,7 @@ public class Union {
     }
 
     Union u = (Union) obj;
-    return new EqualsBuilder()
-        .append(person, u.getPerson())
-        .append(partner, u.getPartner())
+    return new EqualsBuilder().append(person, u.getPerson()).append(partner, u.getPartner())
         .isEquals();
   }
 

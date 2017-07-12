@@ -23,8 +23,8 @@ public class PannableCanvas extends Pane {
     scaleYProperty().bind(myScale);
   }
 
-  /*
-   * Add a grid to the canvas, send it to back
+  /**
+   * Add a grid to the canvas, send it to back.
    */
   // public void addGrid() {
   // double w = getBoundsInLocal().getWidth();

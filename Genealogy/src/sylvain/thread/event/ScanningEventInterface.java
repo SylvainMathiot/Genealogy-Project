@@ -5,4 +5,5 @@ package sylvain.thread.event;
  * @author Sylvain Mathiot
  *
  */
-public interface ScanningEventInterface {}
+public interface ScanningEventInterface {
+}

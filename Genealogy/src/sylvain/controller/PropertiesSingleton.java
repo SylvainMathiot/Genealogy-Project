@@ -18,8 +18,8 @@ public class PropertiesSingleton {
   private static PropertiesSingleton INSTANCE;
   private Properties prop = null;
 
-  /*
-   * Constructor
+  /**
+   * Constructor.
    *
    * @param filename The properties file
    */
@@ -64,11 +64,10 @@ public class PropertiesSingleton {
     return INSTANCE;
   }
 
-  /*
-   * Returns the value of the given property
+  /**
+   * Returns the value of the given property.
    *
    * @param key The key value
-   *
    * @return value of key
    */
   public String get(String key) {

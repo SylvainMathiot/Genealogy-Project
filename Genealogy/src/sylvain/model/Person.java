@@ -44,16 +44,10 @@ public class Person {
       id = folder.getName().split("_")[0];
 
       try {
-        Optional<File> identity =
-            Arrays.asList(folder.listFiles())
-                .stream()
-                .filter(
-                    f ->
-                        f.isFile()
-                            && f.getName()
-                                .equalsIgnoreCase(
-                                    PropertiesSingleton.getInstance().get("IDENTITY.FILENAME")))
-                .findFirst();
+        Optional<File> identity = Arrays.asList(folder.listFiles()).stream()
+            .filter(f -> f.isFile() && f.getName()
+                .equalsIgnoreCase(PropertiesSingleton.getInstance().get("IDENTITY.FILENAME")))
+            .findFirst();
 
         if (identity.isPresent()) {
           Ini ini = new Ini(identity.get());

@@ -25,6 +25,11 @@ public class ScanningContainer implements Serializable {
   private transient EventListenerList listeners;
   private String target;
 
+  /**
+   * Constructor.
+   * 
+   * @param target The database folder
+   */
   public ScanningContainer(String target) {
     this.target = target;
     readResolve();
@@ -48,8 +53,7 @@ public class ScanningContainer implements Serializable {
   }
 
   protected void fireFolderScannedEvent(ScanningEventInterface event) {
-    Arrays.asList(getScanningListeners())
-        .stream()
+    Arrays.asList(getScanningListeners()).stream()
         .filter(listener -> event instanceof FolderScannedEvent)
         .forEach(listener -> listener.folderScanned((FolderScannedEvent) event));
   }
@@ -58,17 +62,13 @@ public class ScanningContainer implements Serializable {
    * Parse the database folder to initialize the data model.
    */
   public void scan() {
-    File[] list =
-        Paths.get(target).toFile().exists()
-            ? Paths.get(target).toFile().listFiles()
-            : new File[] {};
-    Arrays.asList(list)
-        .stream()
+    File[] list = Paths.get(target).toFile().exists() ? Paths.get(target).toFile().listFiles()
+        : new File[] {};
+    Arrays.asList(list).stream()
         .filter(f -> f.isDirectory() && StringUtils.isNumeric(f.getName().subSequence(0, 4)))
-        .forEach(
-            f -> {
-              Person person = DataModel.getInstance().add(f);
-              fireFolderScannedEvent(new FolderScannedEvent(person));
-            });
+        .forEach(f -> {
+          Person person = DataModel.getInstance().add(f);
+          fireFolderScannedEvent(new FolderScannedEvent(person));
+        });
   }
 }

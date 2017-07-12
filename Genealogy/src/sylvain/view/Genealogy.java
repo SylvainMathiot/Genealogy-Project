@@ -56,8 +56,7 @@ public class Genealogy extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     primaryStage.setTitle(PropertiesSingleton.getInstance().get("TITLE"));
-    primaryStage
-        .getIcons()
+    primaryStage.getIcons()
         .add(new Image(Genealogy.class.getResourceAsStream("graphic/image/genealogy128.png")));
     primaryStage.setResizable(true);
     primaryStage.centerOnScreen();
@@ -68,8 +67,7 @@ public class Genealogy extends Application {
     canvas.setTranslateY(0);
 
     Scene scene = new Scene(createContent(canvas), 1400, 700);
-    scene
-        .getStylesheets()
+    scene.getStylesheets()
         .add(Genealogy.class.getResource("graphic/stylesheet.css").toExternalForm());
 
     SceneGestures sceneGestures = new SceneGestures(canvas);
@@ -77,14 +75,13 @@ public class Genealogy extends Application {
     scene.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnMouseDraggedEventHandler());
     scene.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
 
-    primaryStage.setOnCloseRequest(
-        event -> {
-          try {
-            stop();
-          } catch (Exception e) {
-            logger.error(e);
-          }
-        });
+    primaryStage.setOnCloseRequest(event -> {
+      try {
+        stop();
+      } catch (Exception e) {
+        logger.error(e);
+      }
+    });
 
     // Start database folder scanning thread
     Thread scanningThread = new Thread(new ScanningThread(scanningContainer()));
@@ -118,20 +115,18 @@ public class Genealogy extends Application {
     ScanningContainer databaseFolderScanning =
         new ScanningContainer(PropertiesSingleton.getInstance().get("DATABASE.FOLDER"));
 
-    databaseFolderScanning.addScanningListener(
-        new ScanningListener() {
+    databaseFolderScanning.addScanningListener(new ScanningListener() {
 
+      @Override
+      public void folderScanned(FolderScannedEvent e) {
+        Platform.runLater(new Runnable() {
           @Override
-          public void folderScanned(FolderScannedEvent e) {
-            Platform.runLater(
-                new Runnable() {
-                  @Override
-                  public void run() {
-                    logger.info("Person added : " + e.getPerson());
-                  }
-                });
+          public void run() {
+            logger.info("Person added : " + e.getPerson());
           }
         });
+      }
+    });
 
     return databaseFolderScanning;
   }
@@ -140,42 +135,38 @@ public class Genealogy extends Application {
     // Configure database folder monitoring listener
     MonitoringContainer databaseFolderMonitoring = new MonitoringContainer();
 
-    databaseFolderMonitoring.addMonitoringListener(
-        new MonitoringListener() {
+    databaseFolderMonitoring.addMonitoringListener(new MonitoringListener() {
 
+      @Override
+      public void personAdded(PersonAddedEvent e) {
+        Platform.runLater(new Runnable() {
           @Override
-          public void personAdded(PersonAddedEvent e) {
-            Platform.runLater(
-                new Runnable() {
-                  @Override
-                  public void run() {
-                    logger.info("Person added : " + e.getPerson());
-                  }
-                });
-          }
-
-          @Override
-          public void personModified(PersonModifiedEvent e) {
-            Platform.runLater(
-                new Runnable() {
-                  @Override
-                  public void run() {
-                    logger.info("Person modified : " + e.getPerson());
-                  }
-                });
-          }
-
-          @Override
-          public void personDeleted(PersonDeletedEvent e) {
-            Platform.runLater(
-                new Runnable() {
-                  @Override
-                  public void run() {
-                    logger.info("Person deleted : " + e.getPerson());
-                  }
-                });
+          public void run() {
+            logger.info("Person added : " + e.getPerson());
           }
         });
+      }
+
+      @Override
+      public void personModified(PersonModifiedEvent e) {
+        Platform.runLater(new Runnable() {
+          @Override
+          public void run() {
+            logger.info("Person modified : " + e.getPerson());
+          }
+        });
+      }
+
+      @Override
+      public void personDeleted(PersonDeletedEvent e) {
+        Platform.runLater(new Runnable() {
+          @Override
+          public void run() {
+            logger.info("Person deleted : " + e.getPerson());
+          }
+        });
+      }
+    });
 
     return databaseFolderMonitoring;
   }

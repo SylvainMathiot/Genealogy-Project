@@ -56,22 +56,19 @@ public class MonitoringContainer implements Serializable {
   }
 
   protected void firePersonAddedEvent(MonitoringEventInterface event) {
-    Arrays.asList(getMonitoringListeners())
-        .stream()
+    Arrays.asList(getMonitoringListeners()).stream()
         .filter(listener -> event instanceof PersonAddedEvent)
         .forEach(listener -> listener.personAdded((PersonAddedEvent) event));
   }
 
   protected void firePersonModifiedEvent(MonitoringEventInterface event) {
-    Arrays.asList(getMonitoringListeners())
-        .stream()
+    Arrays.asList(getMonitoringListeners()).stream()
         .filter(listener -> event instanceof PersonModifiedEvent)
         .forEach(listener -> listener.personModified((PersonModifiedEvent) event));
   }
 
   protected void firePersonDeletedEvent(MonitoringEventInterface event) {
-    Arrays.asList(getMonitoringListeners())
-        .stream()
+    Arrays.asList(getMonitoringListeners()).stream()
         .filter(listener -> event instanceof PersonDeletedEvent)
         .forEach(listener -> listener.personDeleted((PersonDeletedEvent) event));
   }
@@ -114,25 +111,20 @@ public class MonitoringContainer implements Serializable {
 
   private boolean isPersonDirectory(Path path) {
     return path != null
-        && StringUtils.isNumeric(
-            path.getName(path.getNameCount() - 1).toFile().getName().subSequence(0, 4))
+        && StringUtils
+            .isNumeric(path.getName(path.getNameCount() - 1).toFile().getName().subSequence(0, 4))
         && FilenameUtils.getExtension(path.getName(path.getNameCount() - 1).toFile().getName())
             .isEmpty();
   }
 
   private boolean isRootDirectory(Path path) {
-    return path != null
-        && path.toAbsolutePath()
-            .toString()
-            .equalsIgnoreCase(PropertiesSingleton.getInstance().get("DATABASE.FOLDER"));
+    return path != null && path.toAbsolutePath().toString()
+        .equalsIgnoreCase(PropertiesSingleton.getInstance().get("DATABASE.FOLDER"));
   }
 
   private boolean isIdentityFile(Path path) {
-    return path != null
-        && Files.isRegularFile(path)
-        && path.getName(path.getNameCount() - 1)
-            .toString()
-            .equalsIgnoreCase(PropertiesSingleton.getInstance().get("IDENTITY.FILENAME"));
+    return path != null && Files.isRegularFile(path) && path.getName(path.getNameCount() - 1)
+        .toString().equalsIgnoreCase(PropertiesSingleton.getInstance().get("IDENTITY.FILENAME"));
   }
 
   private void doCreate(Path child) {
@@ -145,8 +137,7 @@ public class MonitoringContainer implements Serializable {
       }
     }
 
-    if (isIdentityFile(child)
-        && isPersonDirectory(child.getParent())
+    if (isIdentityFile(child) && isPersonDirectory(child.getParent())
         && isRootDirectory(child.getParent().getParent())) {
       Person person = DataModel.getInstance().add(child.getParent().toFile());
       firePersonAddedEvent(new PersonAddedEvent(person));
@@ -154,8 +145,7 @@ public class MonitoringContainer implements Serializable {
   }
 
   private void doModify(Path child) {
-    if (isIdentityFile(child)
-        && isPersonDirectory(child.getParent())
+    if (isIdentityFile(child) && isPersonDirectory(child.getParent())
         && isRootDirectory(child.getParent().getParent())) {
       Person person = DataModel.getInstance().add(child.getParent().toFile());
       firePersonModifiedEvent(new PersonModifiedEvent(person));

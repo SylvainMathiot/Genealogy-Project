@@ -26,9 +26,8 @@ import org.apache.logging.log4j.Logger;
  *
  */
 public class WatchServiceSingleton {
-  private static final Logger logger =
-      LogManager.getLogger(
-          LoggerSingleton.getInstance().getLoggerName(WatchServiceSingleton.class));
+  private static final Logger logger = LogManager
+      .getLogger(LoggerSingleton.getInstance().getLoggerName(WatchServiceSingleton.class));
   private static WatchServiceSingleton INSTANCE;
   private WatchService watchService;
   private static final Kind<?>[] kinds = new Kind[] {ENTRY_CREATE, ENTRY_MODIFY, ENTRY_DELETE};
@@ -44,8 +43,7 @@ public class WatchServiceSingleton {
 
     try {
       watchService = FileSystems.getDefault().newWatchService();
-      Files.walk(rootFolder.toPath(), 1)
-          .filter(f -> f.toFile().exists() && Files.isDirectory(f))
+      Files.walk(rootFolder.toPath(), 1).filter(f -> f.toFile().exists() && Files.isDirectory(f))
           .forEach(f -> register(f));
     } catch (IOException e) {
       logger.error(e);

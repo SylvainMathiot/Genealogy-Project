@@ -10,8 +10,8 @@ import org.apache.logging.log4j.ThreadContext;
 public class LoggerSingleton {
   private static LoggerSingleton INSTANCE;
 
-  /*
-   * Constructor
+  /**
+   * Constructor.
    */
   private LoggerSingleton() {}
 
@@ -27,8 +27,8 @@ public class LoggerSingleton {
     return INSTANCE;
   }
 
-  /*
-   * Returns the logger name of a given class
+  /**
+   * Returns the logger name of a given class.
    *
    * @param classObj : a class
    *
