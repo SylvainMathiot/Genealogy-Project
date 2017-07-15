@@ -6,10 +6,10 @@ import org.apache.logging.log4j.Logger;
 import sylvain.controller.LoggerSingleton;
 import sylvain.thread.container.MonitoringContainer;
 
-/*
- *
+/**
+ * Monitoring thread.
+ * 
  * @author Sylvain Mathiot
- *
  */
 public class MonitoringThread implements Runnable {
   private static final Logger logger =

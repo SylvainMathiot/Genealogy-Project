@@ -20,10 +20,10 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/*
- *
+/**
+ * Singleton to access the watcher service.
+ * 
  * @author Sylvain Mathiot
- *
  */
 public class WatchServiceSingleton {
   private static final Logger logger = LogManager

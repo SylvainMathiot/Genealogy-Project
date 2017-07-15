@@ -6,6 +6,11 @@ import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+/**
+ * Union model class.
+ * 
+ * @author Sylvain Mathiot
+ */
 public class Union {
   private String startDate = "";
   private String endDate = "";

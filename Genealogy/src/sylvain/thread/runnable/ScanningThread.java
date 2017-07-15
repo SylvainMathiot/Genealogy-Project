@@ -6,10 +6,10 @@ import org.apache.logging.log4j.Logger;
 import sylvain.controller.LoggerSingleton;
 import sylvain.thread.container.ScanningContainer;
 
-/*
- *
+/**
+ * Scanning thread.
+ * 
  * @author Sylvain Mathiot
- *
  */
 public class ScanningThread implements Runnable {
   private static final Logger logger =

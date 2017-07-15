@@ -6,6 +6,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.FontSmoothingType;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -15,7 +22,13 @@ import org.ini4j.Profile.Section;
 
 import sylvain.controller.LoggerSingleton;
 import sylvain.controller.PropertiesSingleton;
+import sylvain.view.NodeGestures;
 
+/**
+ * Person model class.
+ * 
+ * @author Sylvain Mathiot
+ */
 public class Person {
   private static final Logger logger =
       LogManager.getLogger(LoggerSingleton.getInstance().getLoggerName(Person.class));
@@ -27,6 +40,7 @@ public class Person {
   private String deathDate = "";
   private String deathPlace = "";
   private List<Union> unions = new ArrayList<Union>();
+  private Pane pane = new Pane();
 
   public Person(String id) {
     super();
@@ -178,6 +192,45 @@ public class Person {
 
   public void setUnions(List<Union> unions) {
     this.unions = unions;
+  }
+  
+  public Pane getPane() {
+    return pane;
+  }
+
+  public void setPane(Pane pane) {
+    this.pane = pane;
+  }
+
+  /**
+   * Build the person representation shape.
+   * 
+   * @return The shape
+   */
+  public Pane build(NodeGestures nodeGestures) {
+    Rectangle personShape = new Rectangle();
+    personShape.getStyleClass().add("personShape");
+    personShape.setWidth(Integer.parseInt(PropertiesSingleton.getInstance().get("PERSON.WIDTH")));
+    personShape.setHeight(Integer.parseInt(PropertiesSingleton.getInstance().get("PERSON.HEIGHT")));
+    personShape.setSmooth(true);
+    
+    Text name = new Text(firstNames + " " + lastName);
+    name.getStyleClass().add("nameText");
+    name.setWrappingWidth(personShape.getWidth());
+    name.setTextAlignment(TextAlignment.CENTER);
+    name.setFontSmoothingType(FontSmoothingType.GRAY);
+    name.setSmooth(true);
+    name.setY(20);
+    
+    pane = new Pane();
+    pane.getChildren().addAll(personShape, name);
+
+    if (nodeGestures != null) {
+      pane.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
+      pane.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
+    }
+    
+    return pane;
   }
 
   @Override

@@ -4,9 +4,18 @@
 
 PannableCanvas{
 	-fx-background-color: lightgrey;
-	-fx-border-color: blue;
+	-fx-border-color: black;
+	-fx-pref-height: 700;
+	-fx-pref-width: 1400;
 }
 
-Person{
-	
+.personShape{
+	-fx-smooth: true;
+	-fx-fill: #0080c0;
+	-fx-arc-height: 10;
+	-fx-arc-width: 10;
+}
+
+.nameText{
+	-fx-font-size: 18
 }

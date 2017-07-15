@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Data model class.
+ * 
+ * @author Sylvain Mathiot
+ */
 public class DataModel {
   private static DataModel INSTANCE;
   private List<Person> persons;

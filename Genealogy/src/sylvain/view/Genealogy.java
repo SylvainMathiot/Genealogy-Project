@@ -3,11 +3,11 @@ package sylvain.view;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import org.apache.logging.log4j.LogManager;
@@ -26,16 +26,16 @@ import sylvain.thread.listener.ScanningListener;
 import sylvain.thread.runnable.MonitoringThread;
 import sylvain.thread.runnable.ScanningThread;
 
-/*
- *
- * Main class
+/**
+ * Main class.
  *
  * @author Sylvain Mathiot
- *
  */
 public class Genealogy extends Application {
   private static final Logger logger =
       LogManager.getLogger(LoggerSingleton.getInstance().getLoggerName(Genealogy.class));
+  private PannableCanvas canvas;
+  private NodeGestures nodeGestures;
 
   /**
    * Main method.
@@ -61,12 +61,16 @@ public class Genealogy extends Application {
     primaryStage.setResizable(true);
     primaryStage.centerOnScreen();
 
-    PannableCanvas canvas = new PannableCanvas();
-    canvas.setPrefSize(1400, 700);
+    canvas = new PannableCanvas();
     canvas.setTranslateX(0);
     canvas.setTranslateY(0);
 
-    Scene scene = new Scene(createContent(canvas), 1400, 700);
+    nodeGestures = new NodeGestures(canvas);
+
+    Group root = new Group();
+    root.getChildren().add(canvas);
+
+    Scene scene = new Scene(root, Color.WHITE);
     scene.getStylesheets()
         .add(Genealogy.class.getResource("graphic/stylesheet.css").toExternalForm());
 
@@ -98,18 +102,6 @@ public class Genealogy extends Application {
     primaryStage.show();
   }
 
-  private Parent createContent(PannableCanvas canvas) {
-    Group group = new Group();
-    // NodeGestures nodeGestures = new NodeGestures(canvas);
-
-    // Person p1 = new Person(nodeGestures);
-    // canvas.getChildren().addAll(p1);
-
-    group.getChildren().add(canvas);
-
-    return group;
-  }
-
   private ScanningContainer scanningContainer() {
     // Configure database folder scanning listener
     ScanningContainer databaseFolderScanning =
@@ -123,6 +115,7 @@ public class Genealogy extends Application {
           @Override
           public void run() {
             logger.info("Person added : " + e.getPerson());
+            canvas.getChildren().add(e.getPerson().build(nodeGestures));
           }
         });
       }
@@ -143,6 +136,7 @@ public class Genealogy extends Application {
           @Override
           public void run() {
             logger.info("Person added : " + e.getPerson());
+            canvas.getChildren().add(e.getPerson().build(nodeGestures));
           }
         });
       }
@@ -153,6 +147,11 @@ public class Genealogy extends Application {
           @Override
           public void run() {
             logger.info("Person modified : " + e.getPerson());
+            if (e.getPerson().getPane() != null
+                && canvas.getChildren().contains(e.getPerson().getPane())) {
+              canvas.getChildren().remove(e.getPerson().getPane());
+              canvas.getChildren().add(e.getPerson().build(nodeGestures));
+            }
           }
         });
       }
@@ -163,6 +162,10 @@ public class Genealogy extends Application {
           @Override
           public void run() {
             logger.info("Person deleted : " + e.getPerson());
+            if (e.getPerson().getPane() != null
+                && canvas.getChildren().contains(e.getPerson().getPane())) {
+              canvas.getChildren().remove(e.getPerson().getPane());
+            }
           }
         });
       }

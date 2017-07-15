@@ -2,10 +2,10 @@ package sylvain.controller;
 
 import org.apache.logging.log4j.ThreadContext;
 
-/*
+/**
+ * Singleton to access the logger.
  *
  * @author Sylvain Mathiot
- *
  */
 public class LoggerSingleton {
   private static LoggerSingleton INSTANCE;

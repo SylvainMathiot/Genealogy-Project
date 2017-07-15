@@ -7,10 +7,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 
-/*
- *
+/**
+ * Singleton to access the properties.
+ * 
  * @author Sylvain Mathiot
- *
  */
 public class PropertiesSingleton {
   private static final Logger logger =

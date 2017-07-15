@@ -6,10 +6,10 @@ import sylvain.thread.event.PersonAddedEvent;
 import sylvain.thread.event.PersonDeletedEvent;
 import sylvain.thread.event.PersonModifiedEvent;
 
-/*
- *
+/**
+ * Monitoring events listener.
+ * 
  * @author Sylvain Mathiot
- *
  */
 public interface MonitoringListener extends EventListener {
   void personAdded(PersonAddedEvent e);

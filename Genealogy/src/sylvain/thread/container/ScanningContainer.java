@@ -15,10 +15,10 @@ import sylvain.thread.event.FolderScannedEvent;
 import sylvain.thread.event.ScanningEventInterface;
 import sylvain.thread.listener.ScanningListener;
 
-/*
- *
+/**
+ * Scanning thread container.
+ * 
  * @author Sylvain Mathiot
- *
  */
 public class ScanningContainer implements Serializable {
   private static final long serialVersionUID = 68785075004493324L;

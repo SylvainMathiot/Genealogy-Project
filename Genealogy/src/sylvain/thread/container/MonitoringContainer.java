@@ -29,10 +29,10 @@ import sylvain.thread.event.PersonDeletedEvent;
 import sylvain.thread.event.PersonModifiedEvent;
 import sylvain.thread.listener.MonitoringListener;
 
-/*
- *
+/**
+ * Monitoring thread container.
+ * 
  * @author Sylvain Mathiot
- *
  */
 public class MonitoringContainer implements Serializable {
   private static final long serialVersionUID = 4863785957098726655L;

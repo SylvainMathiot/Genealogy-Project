@@ -1,11 +1,9 @@
 package sylvain.view;
 
-/*
- *
- * Mouse drag context used for scene and nodes
+/**
+ * Mouse drag context used for scene and nodes.
  *
  * @author Sylvain Mathiot
- *
  */
 public class DragContext {
   private double mouseAnchorX;

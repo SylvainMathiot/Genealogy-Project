@@ -2,10 +2,10 @@ package sylvain.thread.event;
 
 import sylvain.model.Person;
 
-/*
- *
+/**
+ * Person modified event.
+ * 
  * @author Sylvain Mathiot
- *
  */
 public class PersonModifiedEvent implements MonitoringEventInterface {
   private Person person;

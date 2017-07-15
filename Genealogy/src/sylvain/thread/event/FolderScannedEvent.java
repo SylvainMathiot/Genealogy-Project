@@ -2,10 +2,10 @@ package sylvain.thread.event;
 
 import sylvain.model.Person;
 
-/*
- *
+/**
+ * Folder scanned event.
+ * 
  * @author Sylvain Mathiot
- *
  */
 public class FolderScannedEvent implements ScanningEventInterface {
   private Person person;
